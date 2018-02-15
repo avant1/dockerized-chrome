@@ -1,0 +1,23 @@
+version: '3'
+services:
+
+  chrome:
+    image: selenium/node-chrome:3.9.1-actinium
+    shm_size: '2gb'
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+      DBUS_SESSION_BUS_ADDRESS: /dev/null
+
+  hub:
+    image: selenium/hub:3.9.1-actinium
+    ports:
+      - "4444:4444"
+
+  php:
+    build:
+      context: ./
+      dockerfile: deploy/php/Dockerfile
+    volumes:
+      - ./app/:/dockerized-chrome
